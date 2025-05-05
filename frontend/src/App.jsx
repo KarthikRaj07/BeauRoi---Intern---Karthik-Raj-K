@@ -1,30 +1,36 @@
 import { useState } from 'react';
 import ResultPage from './Components/ResultPage';
 import UserInput from './Components/UserInput';
-import LoginPage from './Components/LoginPage';
-import Header from './Components/Header'; // Import the Header component
+import Header from './Components/Header';
+import { Home } from './Components/home';
 
 function App() {
   const [formData, setFormData] = useState(null);
   const [user, setUser] = useState(null); // State to store authenticated user
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication status
 
   const handleLogout = () => {
-    setUser(null); // Clear the user state on logout
-    setFormData(null); // Optionally clear form data
+    setUser(null);
+    setFormData(null);
+    setIsAuthenticated(false); // Reset authentication status
   };
 
   return (
     <>
-      {user && <Header onLogout={handleLogout} />} {/* Show Header if user is logged in */}
-      <div>
-        {!user ? (
-          <LoginPage onLogin={setUser} buttonClass="bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 transition duration-300" />
-        ) : formData ? (
-          <ResultPage data={formData} />
-        ) : (
-          <UserInput onSubmit={setFormData} />
-        )}
-      </div>
+      {!isAuthenticated ? (
+        <Home onAuthSuccess={(user) => { setUser(user); setIsAuthenticated(true); }} />
+      ) : (
+        <>
+          {user && <Header onLogout={handleLogout} />}
+          <div>
+            {formData ? (
+              <ResultPage data={formData} />
+            ) : (
+              <UserInput onSubmit={setFormData} />
+            )}
+          </div>
+        </>
+      )}
     </>
   );
 }
