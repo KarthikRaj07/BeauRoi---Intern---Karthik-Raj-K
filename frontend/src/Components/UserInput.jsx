@@ -4,8 +4,9 @@ import { useState } from "react";
 
 function UserInput({ onSubmit }) {
   const [name, setName] = useState("");
-  const [job, setJob] = useState("");
+  const [currentJob, setCurrentJob] = useState("");
   const [skills, setSkills] = useState("");
+  const [requiredJob, setRequiredJob] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,7 +15,12 @@ function UserInput({ onSubmit }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, job, skills: skills.split(",").map(skill => skill.trim()) }),
+      body: JSON.stringify({ 
+        name, 
+        current_job: currentJob, 
+        skills: skills.split(",").map(skill => skill.trim()), 
+        required_job: requiredJob 
+      }),
     });
 
     if (response.ok) {
@@ -41,19 +47,28 @@ function UserInput({ onSubmit }) {
 
         <input
           type="text"
-          placeholder="Job Role (e.g. Full Stack Developer)"
+          placeholder="Current Job (e.g. Full Stack Developer)"
           className="w-full p-2 mb-4 border border-gray-300 rounded"
-          value={job}
-          onChange={(e) => setJob(e.target.value)}
+          value={currentJob}
+          onChange={(e) => setCurrentJob(e.target.value)}
           required
         />
 
         <input
           type="text"
           placeholder="Skills (comma-separated)"
-          className="w-full p-2 mb-6 border border-gray-300 rounded"
+          className="w-full p-2 mb-4 border border-gray-300 rounded"
           value={skills}
           onChange={(e) => setSkills(e.target.value)}
+          required
+        />
+
+        <input
+          type="text"
+          placeholder="Required Job Title"
+          className="w-full p-2 mb-6 border border-gray-300 rounded"
+          value={requiredJob}
+          onChange={(e) => setRequiredJob(e.target.value)}
           required
         />
 

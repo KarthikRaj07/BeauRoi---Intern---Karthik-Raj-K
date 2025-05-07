@@ -10,7 +10,10 @@ function ResultPage({ data }) {
             <strong>Name:</strong> {data.name}
           </p>
           <p className="mb-4">
-            <strong>Job Role:</strong> {data.job}
+            <strong>Current Job:</strong> {data.current_job}
+          </p>
+          <p className="mb-4">
+            <strong>Required Job Title:</strong> {data.required_job}
           </p>
           <p>
             <strong>Skills:</strong>

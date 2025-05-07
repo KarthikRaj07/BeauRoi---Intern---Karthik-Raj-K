@@ -9,10 +9,11 @@ CORS(app)
 def submit_data():
     data = request.json
     name = data.get('name')
-    job = data.get('job')
+    current_job = data.get('current_job')
     skills = data.get('skills')
+    required_job = data.get('required_job')
 
-    if not name or not job or not skills:
+    if not name or not current_job or not skills or not required_job:
         return jsonify({"error": "Invalid input data"}), 400  
 
     skills_str = ",".join(skills)
@@ -22,11 +23,11 @@ def submit_data():
         print("✅ Database connection established inside route.")
         cursor = conn.cursor()
         try:
-            query = "INSERT INTO users (name, job, skills) VALUES (%s, %s, %s)"
-            cursor.execute(query, (name, job, skills_str))
+            query = "INSERT INTO users (name, current_job, skills, required_job) VALUES (%s, %s, %s, %s)"
+            cursor.execute(query, (name, current_job, skills_str, required_job))
             conn.commit()
             print("✅ Data inserted successfully.")
-            return jsonify({"name": name, "job": job, "skills": skills}), 200
+            return jsonify({"name": name, "current_job": current_job, "skills": skills, "required_job": required_job}), 200
         except Exception as e:
             print(f"❌ Error inserting data: {e}")  
             return jsonify({"error": "Database error", "details": str(e)}), 500
